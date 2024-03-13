@@ -1,4 +1,4 @@
-name: Get Branch Name and Commits
+name: Get Branch Name, Commit Hash, and Commits
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - '*'
 
 jobs:
-  get-branch-name-and-commits:
+  get-branch-name-commit-hash-and-commits:
     runs-on: ubuntu-latest
     steps:
       - name: Log start of script
@@ -19,12 +19,16 @@ jobs:
         id: branch
         run: echo "::set-output name=branch_name::$(echo $GITHUB_REF | cut -d/ -f3-)"
       
+      - name: Get latest commit hash
+        id: commit
+        run: echo "::set-output name=commit_hash::$(git log -1 --pretty=format:'%h')"
+
       - name: List commits
         id: commits
         run: git log
       
-      - name: Make API call and Log branch name and GitHub ref
+      - name: Make API call and Log branch name, commit hash, and GitHub ref
         run: |
           response=$(curl -X GET https://jsonplaceholder.typicode.com/todos/1)
           echo "API Response: $response"
-          echo "Branch Name: ${{ steps.branch.outputs.branch_name }}, GitHub Ref: $GITHUB_REF"
+          echo "Branch Name: ${{ steps.branch.outputs.branch_name }}, Commit Hash: ${{ steps.commit.outputs.commit_hash }}, GitHub Ref: $GITHUB_REF"
