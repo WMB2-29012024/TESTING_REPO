@@ -32,7 +32,7 @@ jobs:
         id: commits
         run: |
           echo "Commits:"
-          git log --oneline
+          git log
 
       - name: Show changes
         run: |
