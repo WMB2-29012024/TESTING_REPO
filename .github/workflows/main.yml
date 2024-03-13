@@ -1,4 +1,4 @@
-name: Get Branch Name, Commit Hash, and Commits
+name: Get Branch Name, Commit Hash, Commits, and Changes
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - '*'
 
 jobs:
-  get-branch-name-commit-hash-and-commits:
+  get-branch-name-commit-hash-commits-and-changes:
     runs-on: ubuntu-latest
     steps:
       - name: Log start of script
@@ -25,8 +25,13 @@ jobs:
 
       - name: List commits
         id: commits
-        run: git log
+        run: git log --oneline -n 5
       
+      - name: Show changes
+        run: |
+          echo "Changes made in this push:"
+          git diff --name-only HEAD^
+
       - name: Make API call and Log branch name, commit hash, and GitHub ref
         run: |
           response=$(curl -X GET https://jsonplaceholder.typicode.com/todos/1)
