@@ -30,7 +30,11 @@ jobs:
       - name: Show changes
         run: |
           echo "Changes made in this push:"
-          git diff --name-only HEAD^
+          if git rev-parse HEAD^ >/dev/null 2>&1; then
+            git diff --name-only HEAD^
+          else
+            echo "No previous commit to compare with."
+          fi
 
       - name: Make API call and Log branch name, commit hash, and GitHub ref
         run: |
