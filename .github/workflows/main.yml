@@ -12,6 +12,11 @@ jobs:
       - name: Log start of script
         run: echo "GitHub Actions script is starting..."
 
+      - name: Set git configuration
+        run: |
+          git config --global user.name "sachinrawat1215"
+          git config --global user.email "Sachinrawat0853@gmail.com"
+
       - name: Checkout repository
         uses: actions/checkout@v2
       
