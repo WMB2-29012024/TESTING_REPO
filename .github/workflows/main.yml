@@ -25,7 +25,7 @@ jobs:
 
       - name: List commits
         id: commits
-        run: git log --oneline -n 5
+        run: git log --oneline
       
       - name: Show changes
         run: |
