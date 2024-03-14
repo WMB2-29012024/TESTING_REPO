@@ -27,7 +27,7 @@ jobs:
         run: |
           # Constructing the JSON payload for the API call
           # Constructing the JSON payload for the API call
-          json_payload='{"query":"mutation Mutation($input: SaveUserGithubDataInputType) {\n  saveUserGithubData(input: $input) {\n    response {\n      status\n      message\n    }\n    data {\n      commitHash\n      branchRef\n      branchName\n    }\n  }\n}","variables":{"input":{"commitHash":"new commit","branchRef":"new branchref","branchName": "my branch"}}}'
+          json_payload='{"query":"mutation Mutation($input: SaveUserGithubDataInputType) {\n  saveUserGithubData(input: $input) {    response {      status      message    }    data {      commitHash      branchRef      branchName    }  }}","variables":{"input":{"commitHash":"new commit","branchRef": "new branchref","branchName": "my branch"}}}'
           api_url="https://webmaster-portal-dev.onrender.com/graphql"
 
           echo "$json_payload"
@@ -36,7 +36,7 @@ jobs:
           # Making the API call using curl
           response=$(curl --location $api_url \
           --header 'Content-Type: application/json' \
-          --data '{"query":"mutation Mutation($input: SaveUserGithubDataInputType) {\n  saveUserGithubData(input: $input) {    response {      status      message    }    data {      commitHash      branchRef      branchName    }  }}","variables":{"input":{"commitHash":"new commit","branchRef": "$GITHUB_REF","branchName": "my branch"}}}')
+          --data $json_payload)
           
           # Logging the API response and branch details
           echo "API Response: $response"
