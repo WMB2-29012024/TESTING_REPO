@@ -35,7 +35,7 @@ jobs:
 
           response=$(curl --location $api_url \
             --header 'Content-Type: application/json' \
-            --data "$json_payload")
+            --data $json_payload)
             
           echo "API Response: $response"
           echo "Branch Name: ${{ steps.branch.outputs.branch_name }}, Commit Hash: ${{ steps.commit.outputs.commit_hash }}, GitHub Ref: $GITHUB_REF"
