@@ -26,12 +26,15 @@ jobs:
       - name: Make API call and Log branch name, commit hash, and GitHub ref
         run: |
           # Constructing the JSON payload for the API call
-          json_payload="{\"query\":\"mutation Mutation(\$input: SaveUserGithubDataInputType) { saveUserGithubData(input: \$input) { response { status message } data { commitHash branchRef branchName } } }\",\"variables\":{\"input\":{\"commitHash\":\"${{ steps.commit.outputs.commit_hash }}\",\"branchRef\":\"${{ github.sha }}\",\"branchName\":\"${{ steps.branch.outputs.branch_name }}\"}}"
+          # Constructing the JSON payload for the API call
+          json_payload='{"query":"mutation Mutation($input: SaveUserGithubDataInputType) {\n  saveUserGithubData(input: $input) {\n    response {\n      status\n      message\n    }\n    data {\n      commitHash\n      branchRef\n      branchName\n    }\n  }\n}","variables":{"input":{"commitHash":"new commit","branchRef":"new branchref","branchName": "my branch"}}}'
+          api_url="https://webmaster-portal-dev.onrender.com/graphql"
 
           echo "$json_payload"
+          echo "$api_url"
           
           # Making the API call using curl
-          response=$(curl --location 'https://webmaster-portal-dev.onrender.com/graphql' \
+          response=$(curl --location $api_url \
           --header 'Content-Type: application/json' \
           --data '{"query":"mutation Mutation($input: SaveUserGithubDataInputType) {\n  saveUserGithubData(input: $input) {\n    response {\n      status\n      message\n    }\n    data {\n      commitHash\n      branchRef\n      branchName\n    }\n  }\n}","variables":{"input":{"commitHash":"new commit","branchRef":"new branchref","branchName": "my branch"}}}')
           
