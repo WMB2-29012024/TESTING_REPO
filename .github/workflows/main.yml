@@ -32,7 +32,7 @@ jobs:
           echo "JSON Payload: $json_payload"
           echo "API URL: $api_url"
           
-          response=$(curl --location ttps://webmaster-portal-dev.onrender.com/graphql" \
+          response=$(curl --location 'https://webmaster-portal-dev.onrender.com/graphql' \
             --header 'Content-Type: application/json' \
             --data "$json_payload")
             
