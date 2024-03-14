@@ -34,7 +34,7 @@ jobs:
           
           response=$(curl --location 'https://webmaster-portal-dev.onrender.com/graphql' \
             --header 'Content-Type: application/json' \
-            --data "$json_payload")
+            --data "$(printf '{"query":"mutation Mutation($input: SaveUserGithubDataInputType) {\\n  saveUserGithubData(input: $input) {\\n    response {\\n      status\\n      message\\n    }\\n    data {\\n      commitHash\\n      branchRef\\n      branchName\\n    }\\n  }\\n}","variables":{"input":{"commitHash":"%s","branchRef":"%s","branchName":"%s"}}' "${{ env.COMMIT_HASH }}" "${{ github.ref }}" "${{ steps.branch.outputs.branch_name }}")")
             
           echo "API Response: $response"
           echo "Branch Name: ${{ steps.branch.outputs.branch_name }}, Commit Hash: ${{ env.COMMIT_HASH }}, GitHub Ref: $GITHUB_REF, a: $json_payload"
