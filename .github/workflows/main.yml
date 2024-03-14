@@ -25,20 +25,18 @@ jobs:
 
       - name: Make API call and Log branch name, commit hash, and GitHub ref
         run: |
-          json_payload=$(printf '{"query":"mutation Mutation($input: SaveUserGithubDataInputType) {\\n  saveUserGithubData(input: $input) {\\n    response {\\n      status\\n      message\\n    }\\n    data {\\n      commitHash\\n      branchRef\\n      branchName\\n    }\\n  }\\n}","variables":{"input":{"commitHash":"%s","branchRef":"%s","branchName":"%s"}}' "${{ env.COMMIT_HASH }}" "${{ github.ref }}" "${{ steps.branch.outputs.branch_name }}")
-          
+          # Constructing the JSON payload for the API call
+          json_payload='{"query":"mutation Mutation($input: SaveUserGithubDataInputType) {\n  saveUserGithubData(input: $input) {    response {      status      message    }    data {      commitHash      branchRef      branchName    }  }}","variables":{"input":{"commitHash":"new commit","branchRef": "new branchref","branchName": "my branch"}}}'
           api_url="https://webmaster-portal-dev.onrender.com/graphql"
-          
-          echo "JSON Payload: $json_payload"
-          echo "API URL: $api_url"
-          
-          response=$(curl --location 'https://webmaster-portal-dev.onrender.com/graphql' \
-            --header 'Content-Type: application/json' \
-            --data "$json_payload")
-            
-         
-            
 
-            
-      
-          
+          echo "$json_payload"
+          echo "$api_url"
+
+          # Making the API call using curl
+          response=$(curl --location $api_url \
+          --header 'Content-Type: application/json' \
+          --data '{"query":"mutation Mutation($input: SaveUserGithubDataInputType) {\n  saveUserGithubData(input: $input) {    response {      status      message    }    data {      commitHash      branchRef      branchName    }  }}","variables":{"input":{"commitHash":"new commit","branchRef": "new branchref","branchName": "my branch"}}}')
+
+          # Logging the API response and branch details
+          echo "API Response: $response"
+          echo "Branch Name: ${{ steps.branch.outputs.branch_name }}, Commit Hash: ${{ steps.commit.outputs.commit_hash }}, GitHub Ref: $GITHUB_REF"
