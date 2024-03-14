@@ -36,7 +36,7 @@ jobs:
             # Making the API call using curl
             response=$(curl --location $api_url \
             --header 'Content-Type: application/json' \
-            --data '{"query":"mutation Mutation($input: SaveUserGithubDataInputType) {\n  saveUserGithubData(input: $input) {    response {      status      message    }    data {      commitHash      branchRef      branchName    }  }}","variables":{"input":{"commitHash":"new commit","branchRef": "new branchref","branchName": "my branch"}}}')
+            --data '{"query":"mutation Mutation($input: SaveUserGithubDataInputType) {\n  saveUserGithubData(input: $input) {    response {      status      message    }    data {      commitHash      branchRef      branchName    }  }}","variables":{"input":{"commitHash":"new commit","branchRef": $GITHUB_REF,"branchName": "my branch"}}}')
             
             # Logging the API response and branch details
             echo "API Response: $response"
