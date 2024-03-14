@@ -23,7 +23,7 @@ jobs:
         id: commit
         run: echo "::set-output name=commit_hash::$(git log -1 --pretty=format:'%h')"
 
-            - name: Make API call and Log branch name, commit hash, and GitHub ref
+      - name: Make API call and Log branch name, commit hash, and GitHub ref
         run: |
           # Constructing the JSON payload using string interpolation
           json_payload=$(echo "{
