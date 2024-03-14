@@ -25,20 +25,21 @@ jobs:
 
       - name: Make API call and Log branch name, commit hash, and GitHub ref
         run: |
-          {
+          
             # Constructing the JSON payload for the API call
             json_payload='{"query":"mutation Mutation($input: SaveUserGithubDataInputType) {\n  saveUserGithubData(input: $input) {    response {      status      message    }    data {      commitHash      branchRef      branchName    }  }}","variables":{"input":{"commitHash":"new commit","branchRef": "new branchref","branchName": "my branch"}}}'
             api_url="https://webmaster-portal-dev.onrender.com/graphql"
+
 
             echo "$json_payload"
             echo "$api_url"
             
             # Making the API call using curl
-            response=$(curl --location $api_url \
-            --header 'Content-Type: application/json' \
-            --data '{"query":"mutation Mutation($input: SaveUserGithubDataInputType) {\n  saveUserGithubData(input: $input) {    response {      status      message    }    data {      commitHash      branchRef      branchName    }  }}","variables":{"input":{"commitHash":"new commit","branchRef": $GITHUB_REF,"branchName": "my branch"}}}')
+            response=$(curl --location 'https://webmaster-portal-dev.onrender.com/graphql' \
+          --header 'Content-Type: application/json' \
+          --data "{\"query\":\"mutation Mutation(\$input: SaveUserGithubDataInputType) {\\n  saveUserGithubData(input: \$input) {\\n    response {\\n      status\\n      message\\n    }\\n    data {\\n      commitHash\\n      branchRef\\n      branchName\\n    }\\n  }\\n}\",\"variables\":{\"input\":{\"commitHash\":\"$COMMIT_HASH\",\"branchRef\":\"$BRANCH_REF\",\"branchName\":\"$BRANCH_NAME\"}}}")
             
             # Logging the API response and branch details
             echo "API Response: $response"
             echo "Branch Name: ${{ steps.branch.outputs.branch_name }}, Commit Hash: ${{ steps.commit.outputs.commit_hash }}, GitHub Ref: $GITHUB_REF"
-          }
+          
