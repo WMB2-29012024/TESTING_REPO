@@ -25,7 +25,7 @@ jobs:
 
       - name: Make API call and Log branch name, commit hash, and GitHub ref
         run: |
-          # Constructing the JSON payload using string interpolation
+          # Constructing the JSON payload using string interpolation with correct variable referencing
           json_payload=$(echo "{
             \"query\": \"mutation Mutation($input: SaveUserGithubDataInputType) {\\n  saveUserGithubData(input: $input) {    response {      status      message    }    data {      commitHash      branchRef      branchName    }  }}\\n\",
             \"variables\": {
