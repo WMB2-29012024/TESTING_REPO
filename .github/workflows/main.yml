@@ -29,12 +29,12 @@ jobs:
           json_payload="{\"query\":\"mutation Mutation(\$input: SaveUserGithubDataInputType) { saveUserGithubData(input: \$input) { response { status message } data { commitHash branchRef branchName } } }\",\"variables\":{\"input\":{\"commitHash\":\"${{ steps.commit.outputs.commit_hash }}\",\"branchRef\":\"${{ github.sha }}\",\"branchName\":\"${{ steps.branch.outputs.branch_name }}\"}}"
 
           echo "$json_payload"
-          
+
           # Making the API call using curl
-          response=$(curl --location 'https://webmaster-portal-dev.onrender.com/graphql' \
+          response=$(curl --location --request POST 'https://webmaster-portal-dev.onrender.com/graphql' \
           --header 'Content-Type: application/json' \
-          --data $json_payload)
-          
+          --data-raw "$json_payload")
+
           # Logging the API response and branch details
           echo "API Response: $response"
           echo "Branch Name: ${{ steps.branch.outputs.branch_name }}, Commit Hash: ${{ steps.commit.outputs.commit_hash }}, GitHub Ref: $GITHUB_REF"
