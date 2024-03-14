@@ -22,7 +22,6 @@ jobs:
       - name: Get latest commit hash
         id: commit
         run: echo "::set-output name=commit_hash::$(git log -1 --pretty=format:'%h')"
-
       - name: Make API call and Log branch name, commit hash, and GitHub ref
         run: |
           
@@ -37,7 +36,7 @@ jobs:
             # Making the API call using curl
             response=$(curl --location 'https://webmaster-portal-dev.onrender.com/graphql' \
           --header 'Content-Type: application/json' \
-          --data "{\"query\":\"mutation Mutation(\$input: SaveUserGithubDataInputType) {\\n  saveUserGithubData(input: \$input) {\\n    response {\\n      status\\n      message\\n    }\\n    data {\\n      commitHash\\n      branchRef\\n      branchName\\n    }\\n  }\\n}\",\"variables\":{\"input\":{\"commitHash\":\"$COMMIT_HASH\",\"branchRef\":\"$BRANCH_REF\",\"branchName\":\"$BRANCH_NAME\"}}}")
+          --data "{\"query\":\"mutation Mutation(\$input: SaveUserGithubDataInputType) {\\n  saveUserGithubData(input: \$input) {\\n    response {\\n      status\\n      message\\n    }\\n    data {\\n      commitHash\\n      branchRef\\n      branchName\\n    }\\n  }\\n}\",\"variables\":{\"input\":{\"commitHash\":'\"$COMMIT_HASH\"',\"branchRef\":'\"$BRANCH_REF\"',\"branchName\":'\"$BRANCH_NAME\"'}}}")
             
             # Logging the API response and branch details
             echo "API Response: $response"
