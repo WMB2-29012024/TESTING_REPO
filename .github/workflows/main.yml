@@ -33,7 +33,7 @@ jobs:
           echo "API URL: $api_url"
           
           response=$(curl --location $api_url \
-            --header 'Content-Type: "application/json'" \
+            --header 'Content-Type: application/json' \
             --data $json_payload)
             
           echo "API Response: $response"
