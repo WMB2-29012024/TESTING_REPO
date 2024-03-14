@@ -23,15 +23,16 @@ jobs:
         id: commit
         run: echo "::set-output name=commit_hash::$(git log -1 --pretty=format:'%h')"
 
-      - name: Make API call and Log branch name, commit hash, and GitHub ref
+      - name: Construct JSON payload
         run: |
           json_payload=$(printf '{"query":"mutation Mutation($input: SaveUserGithubDataInputType) {\\n  saveUserGithubData(input: $input) {\\n    response {\\n      status\\n      message\\n    }\\n    data {\\n      commitHash\\n      branchRef\\n      branchName\\n    }\\n  }\\n}","variables":{"input":{"commitHash":"%s","branchRef":"%s","branchName":"%s"}}' "${{ steps.commit.outputs.commit_hash }}" "${{ github.ref }}" "${{ steps.branch.outputs.branch_name }}")
-          
+          echo "JSON Payload: $json_payload"  # Debugging: Log the constructed JSON payload
+
+      - name: Make API call and Log branch name, commit hash, and GitHub ref
+        run: |
           api_url="https://webmaster-portal-dev.onrender.com/graphql"
-          
-          echo "JSON Payload: $json_payload"
-          echo "API URL: $api_url"
-          
+          echo "API URL: $api_url"  # Debugging: Log the API URL
+
           response=$(curl --location $api_url \
             --header 'Content-Type: application/json' \
             --data "$json_payload")
