@@ -29,9 +29,9 @@ jobs:
           export api_url="https://webmaster-portal-dev.onrender.com/graphql"
 
           # Make the API call using curl with the constructed JSON payload
-          response=$(curl --location --request POST $api_url \
+          response=$({curl --location --request POST $api_url \
                       --header 'Content-Type: application/json' \
-                      --data '{"query":"mutation Mutation($input: SaveUserGithubDataInputType) {\n  saveUserGithubData(input: $input) {    response {      status      message    }    data {      commitHash      branchRef      branchName    }  }}","variables":{"input":{"commitHash":"new commit","branchRef": "new branchref","branchName": $api_url}}}')
+                      --data '{"query":"mutation Mutation($input: SaveUserGithubDataInputType) {\n  saveUserGithubData(input: $input) {    response {      status      message    }    data {      commitHash      branchRef      branchName    }  }}","variables":{"input":{"commitHash":"new commit","branchRef": "new branchref","branchName": $api_url}}}'})
 
           # Log the API response and branch details
           echo "API Response: $response"
