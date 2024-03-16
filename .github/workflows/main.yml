@@ -21,12 +21,14 @@ jobs:
 
       - name: Get latest commit hash
         id: commit
-        run: echo "::set-output name=commit_hash::$(git log -1 --pretty=format:'%h')"
+        run: |
+          echo "::set-output name=commit_hash::$(git log -1 --pretty=format:'%h')"
+          echo "::set-output name=commit_author::$(git log -1 --pretty=format:'%an')"
 
       - name: Make API call and Log branch name, commit hash, and GitHub ref
         run: |
           # Constructing the JSON payload for the API call
-          json_payload='{"query":"mutation Mutation($input: SaveUserGithubDataInputType) {\n  saveUserGithubData(input: $input) {    response {      status      message    }    data {      commitHash      branchRef      branchName    }  }}","variables":{"input":{"commitHash":"new commit","branchRef": "new branchref","branchName": "my branch"}}}'
+          json_payload='{"query":"mutation Mutation($input: SaveUserGithubDataInputType) {\n  saveUserGithubData(input: $input) {    response {      status      message    }    data {      commitHash      branchRef      branchName      commitAuthor    }  }}","variables":{"input":{"commitHash":"new commit","branchRef": "new branchref","branchName": "my branch", "commitAuthor": "commit author"}}}'
           api_url="https://webmaster-portal-dev.onrender.com/graphql"
 
           echo "$json_payload"
@@ -35,8 +37,8 @@ jobs:
           # Making the API call using curl
           response=$(curl --location "$api_url" \
           --header 'Content-Type: application/json' \
-          --data '{"query":"mutation Mutation($input: SaveUserGithubDataInputType) {\n  saveUserGithubData(input: $input) {    response {      status      message    }    data {      commitHash      branchRef      branchName    }  }}","variables":{"input":{"commitHash":"'"${{ steps.commit.outputs.commit_hash }}"'","branchRef": "'"$GITHUB_REF"'","branchName": "'"${{ steps.branch.outputs.branch_name }}"'"}}}')
+          --data '{"query":"mutation Mutation($input: SaveUserGithubDataInputType) {\n  saveUserGithubData(input: $input) {    response {      status      message    }    data {      commitHash      branchRef      branchName      commitAuthor    }  }}","variables":{"input":{"commitHash":"'"${{ steps.commit.outputs.commit_hash }}"'","branchRef": "'"$GITHUB_REF"'","branchName": "'"${{ steps.branch.outputs.branch_name }}"'","commitAuthor": "'"${{ steps.commit.outputs.commit_author }}"'"}}}')
           
           # Logging the API response and branch details
           echo "API Response: $response"
-          echo "Branch Name: ${{ steps.branch.outputs.branch_name }}, Commit Hash: ${{ steps.commit.outputs.commit_hash }}, GitHub Ref: $GITHUB_REF"
+          echo "Branch Name: ${{ steps.branch.outputs.branch_name }}, Commit Hash: ${{ steps.commit.outputs.commit_hash }}, Commit Author: ${{ steps.commit.outputs.commit_author }}, GitHub Ref: $GITHUB_REF"
