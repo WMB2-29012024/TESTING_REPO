@@ -39,4 +39,4 @@ jobs:
           
           # Logging the API response and branch details
           echo "API Response: $response"
-          echo "Branch Name: ${{ steps.branch.outputs.branch_name }}, Commit Hash: ${{ steps.commit.outputs.commit_hash }}, Commit Author: ${{ steps.commit.outputs.commit_author }}, GitHub Ref: $GITHUB_REF, userId: $USER_ID"
+          echo "Branch Name: ${{ steps.branch.outputs.branch_name }}, Commit Hash: ${{ steps.commit.outputs.commit_hash }}, Commit Author: ${{ steps.commit.outputs.commit_author }}, GitHub Ref: $GITHUB_REF, userId: ${{ secrets.USER_ID }}"
