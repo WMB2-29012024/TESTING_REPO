@@ -31,6 +31,12 @@ jobs:
           api_url="https://webmaster-portal-dev.onrender.com/graphql"
 
           echo "$api_url"
+
+          questionIdResponse=$(curl --location "$api_url" \
+          --header 'Content-Type: application/json' \
+          --data '{"query":"query GetQuestionIdByBranchName($branchName: String) { getQuestionIdByBranchName(branchName: $branchName) { questionId response { message status } }}","variables":{"branchName":"'"${{ steps.branch.outputs.branch_name }}"'"}}')
+
+          echo "Question ID Response: $questionIdResponse"
           
           # Making the API call using curl
           response=$(curl --location "$api_url" \
