@@ -44,7 +44,11 @@ jobs:
           # Making the API call using curl
           response=$(curl --location "$api_url" \
           --header 'Content-Type: application/json' \
-          --data '{"query":"mutation Mutation($input: UserGithubDataInputType) {\n  UserGithubDataInputType(input: $input) {    response {      status      message    }    data {      commitHash      branchRef      branchName     userId   commitAuthor    questionId  }  }}","variables":{"input":{"commitHash":"'"${{ steps.commit.outputs.commit_hash }}"'","branchRef": "'"$GITHUB_REF"'","branchName": "'"${{ steps.branch.outputs.branch_name }}"'","userId": "'"${{ secrets.USER_ID }}"'","commitAuthor": "'"${{ steps.commit.outputs.commit_author }}"'","questionId": "'"$questionId"'"}}}')
+          --data '{"query":"mutation Mutation($input: UserGithubDataInputType) {\n  UserGithubDataInputType(input: $input) {    response {      status      message    }    data {      commitHash      branchRef      branchName     userId   commitAuthor    questionId  }  }}","variables":{"input":{"commitHash":"commit3","branchRef": "hello","branchName": "branch1","userId": "659941e08252f560009da958","commitAuthor": "Dhananjay","questionId": "6606606751a2ffd19d02c69c"}}}')
+
+          # response=$(curl --location "$api_url" \
+          # --header 'Content-Type: application/json' \
+          # --data '{"query":"mutation Mutation($input: UserGithubDataInputType) {\n  UserGithubDataInputType(input: $input) {    response {      status      message    }    data {      commitHash      branchRef      branchName     userId   commitAuthor    questionId  }  }}","variables":{"input":{"commitHash":"'"${{ steps.commit.outputs.commit_hash }}"'","branchRef": "'"$GITHUB_REF"'","branchName": "'"${{ steps.branch.outputs.branch_name }}"'","userId": "'"${{ secrets.USER_ID }}"'","commitAuthor": "'"${{ steps.commit.outputs.commit_author }}"'","questionId": "'"$questionId"'"}}}')
           
           # Logging the API response and branch details
           echo "API Response: $response"
