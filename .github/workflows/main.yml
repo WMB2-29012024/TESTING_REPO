@@ -39,10 +39,10 @@ jobs:
           echo "Question ID Response: $questionIdResponse"
           
           # Making the API call using curl
-          # response=$(curl --location "$api_url" \
-          # --header 'Content-Type: application/json' \
-          # --data '{"query":"mutation Mutation($input: SaveUserGithubDataInputType) {\n  saveUserGithubData(input: $input) {    response {      status      message    }    data {      commitHash      branchRef      branchName    }  }}","variables":{"input":{"commitHash":"'"${{ steps.commit.outputs.commit_hash }}"'","branchRef": "'"$GITHUB_REF"'","branchName": "'"${{ steps.branch.outputs.branch_name }}"'","userId": "'"${{ secrets.USER_ID }}"'"}}}')
+          response=$(curl --location "$api_url" \
+          --header 'Content-Type: application/json' \
+          --data '{"query":"mutation Mutation($input: UserGithubDataInputType) {\n  UserGithubDataInputType(input: $input) {    response {      status      message    }    data {      commitHash      branchRef      branchName    }  }}","variables":{"input":{"commitHash":"'"${{ steps.commit.outputs.commit_hash }}"'","branchRef": "'"$GITHUB_REF"'","branchName": "'"${{ steps.branch.outputs.branch_name }}"'","userId": "'"${{ secrets.USER_ID }}"'"}}}')
           
           # Logging the API response and branch details
-          # echo "API Response: $response"
+          echo "API Response: $response"
           echo "Branch Name: ${{ steps.branch.outputs.branch_name }}, Commit Hash: ${{ steps.commit.outputs.commit_hash }}, Commit Author: ${{ steps.commit.outputs.commit_author }}, GitHub Ref: $GITHUB_REF, userId: ${{ secrets.USER_ID }}"
