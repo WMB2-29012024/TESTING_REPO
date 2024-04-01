@@ -34,7 +34,7 @@ jobs:
 
           questionIdResponse=$(curl --location "$api_url" \
           --header 'Content-Type: application/json' \
-          --data '{"query":"query GetQuestionIdByBranchName($branchName: String) { getQuestionIdByBranchName(branchName: $branchName) { questionId response { message status } }}","variables":{"branchName":"'"${{ steps.branch.outputs.branch_name }}"'"}}')
+          --data '{"query":"query GetQuestionIdByBranchName($branchName: String) { getQuestionIdByBranchName(branchName: $branchName) { questionId response { message status } }}","variables":{"branchName":"WMB2-cr112"}}')
 
           echo "Question ID Response: $questionIdResponse"
           
