@@ -36,7 +36,10 @@ jobs:
           --header 'Content-Type: application/json' \
           --data '{"query":"query GetQuestionIdByBranchName($branchName: String) { getQuestionIdByBranchName(branchName: $branchName) { questionId response { message status } }}","variables":{"branchName":"WMB2-cr112"}}')
 
-          echo "Question  ID Response: $questionIdResponse"
+          # Extracting questionId field value using jq
+          questionId=$(echo "$questionIdResponse" | jq -r '.data.getQuestionIdByBranchName.questionId')
+
+          echo "Question ID: $questionId"
           
           # Making the API call using curl
           # response=$(curl --location "$api_url" \
