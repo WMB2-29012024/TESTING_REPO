@@ -28,8 +28,10 @@ jobs:
       - name: Make API call and Log branch name, commit hash, and GitHub ref
         run: |
           # Constructing the JSON payload for the API call
+          json_payload='{"query":"mutation Mutation($input: SaveUserGithubDataInputType) {\n  saveUserGithubData(input: $input) {    response {      status      message    }    data {      commitHash      branchRef      branchName      commitAuthor    }  }}","variables":{"input":{"commitHash":"new commit","branchRef": "new branchref","branchName": "my branch", "commitAuthor": "commit author"}}}'
           api_url="https://webmaster-portal-dev.onrender.com/graphql"
 
+          echo "$json_payload"
           echo "$api_url"
           
           # Making the API call using curl
