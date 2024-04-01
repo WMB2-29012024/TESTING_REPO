@@ -44,7 +44,7 @@ jobs:
           # Making the API call using curl
           response=$(curl --location "$api_url" \
           --header 'Content-Type: application/json' \
-          --data '{"query":"mutation Mutation($input: UserGithubDataInputType) {\n  upsertUserGithubData(input: $input) {\n    response {\n      status\n      message\n    }\n    data {\n      commitHash\n      branchName\n      branchRef\n      commitAuthor\n      questionId\n      userId\n    }\n  }\n}","variables":{"input":{"commitHash":"commit3","questionId":"6606606751a2ffd19d02c69c","userId":"659941e08252f560009da958","commitAuthor":"Dhananjay","branchName":"branch1","branchRef":"hello"}}}'
+          --data '{"query":"mutation Mutation($input: UserGithubDataInputType) {\n  upsertUserGithubData(input: $input) {    response {      status      message    }    data {      commitHash      branchRef      branchName     userId   commitAuthor    questionId  }  }}","variables":{"input":{"commitHash":"commit3","branchRef": "hello","branchName": "branch1","userId": "659941e08252f560009da958","commitAuthor": "Dhananjay","questionId": "6606606751a2ffd19d02c69c"}}}')
 
           # response=$(curl --location "$api_url" \
           # --header 'Content-Type: application/json' \
