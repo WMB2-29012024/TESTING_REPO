@@ -28,7 +28,7 @@ jobs:
       - name: Make API call and Log branch name, commit hash, and GitHub ref
         run: |
           # Constructing the JSON payload for the API call
-          api_url="${{ secrets.USER_ID }}"
+          api_url="${{ secrets.SERVER_API_URL }}"
 
           echo "$api_url"
 
