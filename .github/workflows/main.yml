@@ -28,7 +28,7 @@ jobs:
       - name: Make API call and Log branch name, commit hash, and GitHub ref
         run: |
           # Constructing the JSON payload for the API call
-          api_url="https://api.bewebmasters.com/graphql"
+          api_url="${{ secrets.USER_ID }}"
 
           echo "$api_url"
 
